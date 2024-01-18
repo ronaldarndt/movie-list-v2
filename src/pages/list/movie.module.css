@@ -1,0 +1,7 @@
+.cast::-webkit-scrollbar {
+  width: 10px;
+}
+
+.cast {
+  -webkit-overflow-scrolling: touch;
+}
