@@ -1,9 +1,9 @@
-import { useRef, useCallback } from "react";
+import { useCallback, useRef } from "react";
 
 // eslint-disable-next-line @typescript-eslint/ban-types
 export function useDebouncedCallback<TFunc extends Function>(
   cb: TFunc,
-  wait = 250
+  wait = 250,
 ): TFunc {
   const timeout = useRef<number | null>(null);
 
@@ -28,6 +28,6 @@ export function useDebouncedCallback<TFunc extends Function>(
 
       timeout.current = window.setTimeout(later, wait);
     },
-    [cb, wait]
+    [cb, wait],
   );
 }
