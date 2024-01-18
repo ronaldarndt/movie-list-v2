@@ -15,14 +15,10 @@ import clsx from "clsx";
 import { ChangeEvent } from "preact/compat";
 import { useRef, useState } from "preact/hooks";
 import { useHotkeys } from "react-hotkeys-hook";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDebounce } from "usehooks-ts";
 import { tmdbRequest } from "../utils/request";
-import {
-  Configurations,
-  MovieSearchResult,
-  PagedResponse,
-} from "../utils/tmdb/tmdb-types";
+import { MovieSearchResult, PagedResponse } from "../utils/tmdb/tmdb-types";
 import AddToCollectionButton from "./add-to-collection-button";
 import MoviePoster from "./movie-poster";
 
@@ -31,8 +27,6 @@ export default function Searchbar() {
   const [open, setOpen] = useState(false);
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
   const listRef = useRef<Array<HTMLElement | null>>([]);
-
-  const navigate = useNavigate();
 
   const { refs, floatingStyles, context } = useFloating({
     open,
@@ -74,12 +68,6 @@ export default function Searchbar() {
     },
     [],
   );
-
-  const configQuery = useQuery({
-    queryKey: ["config"],
-    queryFn: () => tmdbRequest<Configurations>("/configuration"),
-    staleTime: 12 * 60 * 60 * 1000,
-  });
 
   const movieQuery = useQuery({
     queryKey: ["search", useDebounce(search, 300)],
