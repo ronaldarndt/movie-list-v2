@@ -50,14 +50,18 @@ export function Component() {
   }
 
   return (
-    <div className="flex-col">
-      <h1 className="text-2xl font-bold">Users</h1>
+    <div className="flex flex-col gap-y-4">
+      <div className="flex justify-between items-center">
+        <h1>Users</h1>
+      </div>
 
-      <div className="flex-col">
+      <div className="flex-col gap-8">
         {data?.map((x) => (
-          <p key={x.id}>
-            {x.name} - <span className="badge">{x.role}</span>
-          </p>
+          <div className="flex gap-x-2 items-center bg-slate-600 hover:bg-slate-500 rounded p-2">
+            <div className="badge">{x.role}</div>
+
+            <h2>{x.name}</h2>
+          </div>
         ))}
       </div>
 

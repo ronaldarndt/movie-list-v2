@@ -1,8 +1,10 @@
+import useIsMobile from "@/hooks/use-is-mobile";
 import { useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
 import { orderBy, query } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { useState } from "preact/hooks";
+import { Navigate } from "react-router-dom";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
 import { collectionAtom } from "../../atoms/collectionAtom";
 import MovieRow from "../../components/movie-row";
@@ -13,7 +15,11 @@ import { Genres } from "../../utils/tmdb/tmdb-types";
 export function Component() {
   const { selected } = useAtomValue(collectionAtom);
 
-  const [mode, setMode] = useState<"list" | "grid">("list");
+  const isMobile = useIsMobile();
+
+  const [mode, setMode] = useState<"list" | "grid">(isMobile ? "grid" : "list");
+
+  if (!selected) return <Navigate to="/collections" />;
 
   const db = useFirestore();
 
@@ -36,35 +42,38 @@ export function Component() {
   }
 
   const watched = data.filter((x) => x.watched);
+  const showGrid = mode === "grid" || isMobile;
 
   return (
     <div className="flex flex-col gap-y-4">
       <div className="flex justify-between items-center">
         <h1>Movies</h1>
 
-        <div>
-          <button
-            className={clsx(mode === "list" ? "bg-gray-600!" : undefined)}
-            onClick={() => setMode("list")}
-          >
-            <div className="i-ph-list text-2xl" />
-          </button>
-          <button
-            className={clsx(
-              "ml-1",
-              mode === "grid" ? "bg-gray-600!" : undefined,
-            )}
-            onClick={() => setMode("grid")}
-          >
-            <div className="i-ph-squares-four text-2xl" />
-          </button>
-        </div>
+        {!isMobile ? (
+          <div>
+            <button
+              className={clsx(mode === "list" ? "bg-gray-600!" : undefined)}
+              onClick={() => setMode("list")}
+            >
+              <div className="i-ph-list text-2xl" />
+            </button>
+            <button
+              className={clsx(
+                "ml-1",
+                mode === "grid" ? "bg-gray-600!" : undefined,
+              )}
+              onClick={() => setMode("grid")}
+            >
+              <div className="i-ph-squares-four text-2xl" />
+            </button>
+          </div>
+        ) : null}
       </div>
 
       <div
         className={clsx(
           "gap-8",
-          mode === "list" ? "flex-col gap-y-4" : "flex-row flex-wrap",
+          !showGrid ? "flex-col gap-y-4" : "flex-row flex-wrap",
         )}
       >
         {data
@@ -86,7 +95,7 @@ export function Component() {
           <div
             className={clsx(
               "gap-8",
-              mode === "list" ? "flex-col gap-y-4" : "flex-row flex-wrap",
+              !showGrid ? "flex-col gap-y-4" : "flex-row flex-wrap",
             )}
           >
             {watched.map((movie) => (

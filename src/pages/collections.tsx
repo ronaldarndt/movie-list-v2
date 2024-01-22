@@ -95,31 +95,31 @@ export function Component() {
   }
 
   return (
-    <>
-      <h1 className="text-2xl font-bold mt-0">Collections</h1>
-      {!data?.length ? <div>No collections found</div> : null}
+    <div className="flex flex-col gap-y-4">
+      <div className="flex justify-between items-center">
+        <h1>Collections</h1>
+        {!data?.length ? <div>No collections found</div> : null}
+      </div>
 
-      {data?.map((collection, i) => {
+      {data?.map((collection) => {
         return (
-          <div className="flex-col">
-            <div>
-              <button
-                className="i-ph-check-bold text-green text-xl hover:cursor-pointer me-2"
-                onClick={() =>
-                  setCollectionPrefs((p) => ({
-                    ...p,
-                    selected: collection.id,
-                    selectedName: collection.name,
-                  }))
-                }
-              />
-              <button className="i-ph-trash-bold text-red text-xl hover:cursor-pointer me-2" />
+          <div
+            key={collection.id}
+            className="flex gap-x-2 items-center bg-slate-600 hover:bg-slate-500 rounded p-2"
+          >
+            <button
+              className="i-ph-check-bold text-green text-xl hover:cursor-pointer me-2"
+              onClick={() =>
+                setCollectionPrefs((p) => ({
+                  ...p,
+                  selected: collection.id,
+                  selectedName: collection.name,
+                }))
+              }
+            />
+            <button className="i-ph-trash-bold text-red text-xl hover:cursor-pointer me-2" />
 
-              <div>{collection.id} - </div>
-              <div>{collection.name}</div>
-              <div className="ms-2">{collection.description}</div>
-            </div>
-            {i !== data?.length - 1 ? <hr className="w-100%" /> : null}
+            <div>{collection.name}</div>
           </div>
         );
       })}
@@ -151,7 +151,7 @@ export function Component() {
           </div>
         </FloatingFocusManager>
       )}
-    </>
+    </div>
   );
 }
 

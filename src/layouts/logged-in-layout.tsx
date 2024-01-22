@@ -1,3 +1,4 @@
+import useIsMobile from "@/hooks/use-is-mobile";
 import clsx from "clsx";
 import { useAtomValue } from "jotai";
 import { useRef } from "preact/hooks";
@@ -13,6 +14,8 @@ import UserOptions from "../components/user-options";
 export function Component() {
   const collectionPrefs = useAtomValue(collectionAtom);
   const { data, status } = useSigninCheck();
+
+  const isMobile = useIsMobile();
 
   const searchRef = useRef<HTMLInputElement>(null);
 
@@ -34,8 +37,8 @@ export function Component() {
     <>
       <Toaster position="bottom-center" />
 
-      <nav className="flex flex-row h-6 bg-gray-800 w-full fixed ps-20 pt-1 pb-1 items-center z-3">
-        Selected: {collectionPrefs.selectedName}
+      <nav className="flex flex-row h-6 bg-gray-800 w-full fixed md:ps-20 pt-1 pb-1 items-center z-3">
+        {!isMobile ? `Selected: ${collectionPrefs.selectedName}` : null}
         <Searchbar />
       </nav>
 
