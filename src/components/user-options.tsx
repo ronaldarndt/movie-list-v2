@@ -1,4 +1,5 @@
 import {
+  flip,
   shift,
   useClick,
   useDismiss,
@@ -15,8 +16,8 @@ export default function UserOptions() {
   const { refs, floatingStyles, context } = useFloating<HTMLButtonElement>({
     open,
     onOpenChange: setOpen,
-    placement: "right",
-    middleware: [shift({ padding: 8 })],
+    placement: "bottom",
+    middleware: [shift({ padding: 8 }), flip()],
   });
 
   const click = useClick(context);

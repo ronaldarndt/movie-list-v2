@@ -73,7 +73,9 @@ export function Component() {
       <div
         className={clsx(
           "gap-8",
-          !showGrid ? "flex-col gap-y-4" : "flex-row flex-wrap",
+          !showGrid
+            ? "flex-col gap-y-4"
+            : "flex-row flex-wrap justify-center md:justify-start",
         )}
       >
         {data
@@ -95,7 +97,9 @@ export function Component() {
           <div
             className={clsx(
               "gap-8",
-              !showGrid ? "flex-col gap-y-4" : "flex-row flex-wrap",
+              !showGrid
+                ? "flex-col gap-y-4"
+                : "flex-row flex-wrap justify-center md:justify-start",
             )}
           >
             {watched.map((movie) => (
@@ -109,6 +113,8 @@ export function Component() {
           </div>
         </>
       ) : null}
+
+      <div className="pb-8" />
     </div>
   );
 }
