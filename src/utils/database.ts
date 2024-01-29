@@ -3,6 +3,7 @@ import {
   Firestore,
   QueryDocumentSnapshot,
   SnapshotOptions,
+  Timestamp,
   collection,
   doc,
 } from "firebase/firestore";
@@ -41,6 +42,16 @@ export interface CollectionMovie {
   voteAverage: number;
   watched: boolean;
   genreIds: number[];
+  userRatings?: number[];
+}
+
+export interface CollectionMovieReview {
+  id: string;
+  userId: string;
+  userName: string;
+  userRating: number;
+  userOverview: string;
+  createdAt: Timestamp;
 }
 
 const defaultConverter = <T extends DocumentData>() => ({
@@ -114,3 +125,13 @@ export const collectionMovieRef = (
   doc(collectionRef(db, collectionId), `movies/${movieId}`).withConverter(
     movieCollectionConverter,
   );
+
+export const collectionMovieReviewsRef = (
+  db: Firestore,
+  collectionId: string,
+  movieId: string | number,
+) =>
+  collection(
+    collectionMovieRef(db, collectionId, movieId),
+    `reviews`,
+  ).withConverter(defaultConverter<CollectionMovieReview>());
