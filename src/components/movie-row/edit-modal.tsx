@@ -15,6 +15,7 @@ import {
 } from "firebase/firestore";
 import { useAtomValue } from "jotai";
 import { nanoid } from "nanoid";
+import { useMemo } from "preact/hooks";
 import { JSX } from "preact/jsx-runtime";
 import Modal from "react-responsive-modal";
 import { useFirestore, useFirestoreCollectionData, useUser } from "reactfire";
@@ -33,7 +34,7 @@ export default function EditMovieModal({ movie, open, onClose }: Props) {
 
   const db = useFirestore();
   const reviews = useFirestoreCollectionData(
-    collectionMovieReviewsRef(db, selected, movie.id),
+    useMemo(() => collectionMovieReviewsRef(db, selected, movie.id), []),
   );
 
   function handleSubmit(e: JSX.TargetedSubmitEvent<HTMLFormElement>) {
@@ -81,12 +82,12 @@ export default function EditMovieModal({ movie, open, onClose }: Props) {
       onClose={onClose}
       classNames={{
         modalContainer: "w-100% h-100% flex justify-center items-center",
-        modal: "bg-gray-600!",
+        modal: "bg-gray-600! min-w-200 min-h-100",
       }}
     >
       <MoviePoster
         size="lg"
-        className="object-contain absolute"
+        className="object-contain absolute mx-auto"
         height={window.innerHeight * 0.3}
         path={movie.posterPath}
       />
@@ -133,7 +134,7 @@ export default function EditMovieModal({ movie, open, onClose }: Props) {
         <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
           <label className="flex flex-col">
             Text
-            <textarea className="mt-1" name="text" />
+            <textarea className="mt-1 text-black" name="text" />
           </label>
 
           <label className="flex flex-col">
@@ -143,7 +144,7 @@ export default function EditMovieModal({ movie, open, onClose }: Props) {
               min={0}
               max={10}
               required
-              className="mt-1"
+              className="mt-1 text-black"
               name="rating"
             />
           </label>

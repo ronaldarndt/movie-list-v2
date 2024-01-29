@@ -1,7 +1,7 @@
 import clsx from "clsx";
 import { deleteDoc, updateDoc } from "firebase/firestore";
 import { useAtomValue } from "jotai";
-import { useState } from "preact/hooks";
+import { useCallback, useMemo, useState } from "preact/hooks";
 import "react-responsive-modal/styles.css";
 import { Link } from "react-router-dom";
 import { useFirestore } from "reactfire";
@@ -114,9 +114,9 @@ export default function MovieRow({ movie, mode, genres }: Props) {
       </Link>
 
       <EditMovieModal
-        movie={movie}
+        movie={useMemo(() => movie, [movie.id])}
         open={editing}
-        onClose={() => setEditing(false)}
+        onClose={useCallback(() => setEditing(false), [])}
       />
     </>
   );
