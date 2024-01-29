@@ -42,7 +42,7 @@ export interface CollectionMovie {
   voteAverage: number;
   watched: boolean;
   genreIds: number[];
-  userRatings?: number[];
+  userRatings?: Record<string, number>;
 }
 
 export interface CollectionMovieReview {

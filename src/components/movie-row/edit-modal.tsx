@@ -6,7 +6,6 @@ import {
 } from "@/utils/database";
 import clsx from "clsx";
 import {
-  arrayUnion,
   deleteDoc,
   doc,
   serverTimestamp,
@@ -58,7 +57,9 @@ export default function EditMovieModal({ movie, open, onClose }: Props) {
     });
 
     updateDoc(collectionMovieRef(db, selected, movie.id), {
-      userRatings: arrayUnion(rating),
+      userRatings: {
+        [id]: rating,
+      },
     });
   }
 
@@ -66,6 +67,11 @@ export default function EditMovieModal({ movie, open, onClose }: Props) {
     const ref = collectionMovieReviewsRef(db, selected, movie.id);
 
     deleteDoc(doc(ref, id));
+    updateDoc(collectionMovieRef(db, selected, movie.id), {
+      userRatings: {
+        [id]: null as unknown as number,
+      },
+    });
   }
 
   return (

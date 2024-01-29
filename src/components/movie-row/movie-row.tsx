@@ -31,6 +31,8 @@ export default function MovieRow({ movie, mode, genres }: Props) {
     deleteDoc(ref);
   }
 
+  const ratings = Object.values(movie.userRatings ?? {}).filter(Boolean);
+
   return (
     <>
       <Link
@@ -97,13 +99,8 @@ export default function MovieRow({ movie, mode, genres }: Props) {
           <div className="flex flex-row justify-between items-center">
             <h3>{new Date(movie.releaseDate).toLocaleDateString()}</h3>
             {movie.voteAverage.toFixed(2)}⭐{" "}
-            {movie.userRatings?.length ? (
-              <>
-                /{" "}
-                {movie.userRatings.reduce((a, b) => a + b, 0) /
-                  movie.userRatings.length}
-                ⭐
-              </>
+            {ratings.length ? (
+              <>/ {ratings.reduce((a, b) => a + b, 0) / ratings.length}⭐</>
             ) : null}
           </div>
 
