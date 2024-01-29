@@ -7,6 +7,7 @@ import {
 import clsx from "clsx";
 import {
   deleteDoc,
+  deleteField,
   doc,
   serverTimestamp,
   setDoc,
@@ -56,22 +57,22 @@ export default function EditMovieModal({ movie, open, onClose }: Props) {
       createdAt: serverTimestamp(),
     });
 
-    updateDoc(collectionMovieRef(db, selected, movie.id), {
-      userRatings: {
-        [id]: rating,
-      },
-    });
+    updateDoc(
+      collectionMovieRef(db, selected, movie.id),
+      `userRatings.${id}`,
+      rating,
+    );
   }
 
   function handleDelete(id: string) {
     const ref = collectionMovieReviewsRef(db, selected, movie.id);
 
     deleteDoc(doc(ref, id));
-    updateDoc(collectionMovieRef(db, selected, movie.id), {
-      userRatings: {
-        [id]: null as unknown as number,
-      },
-    });
+    updateDoc(
+      collectionMovieRef(db, selected, movie.id),
+      `userRatings.${id}`,
+      deleteField(),
+    );
   }
 
   return (
